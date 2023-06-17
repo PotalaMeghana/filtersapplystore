@@ -1,14 +1,31 @@
 
  <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
-<%@ page import="eStoreProduct.model.Product" %>
-<%@ page import="eStoreProduct.DAO.ProdStockDAO" %>
-<%@ page import="eStoreProduct.DAO.ProdStockDAOImp" %>
+
+<%@ page import="eStoreProduct.utility.ProductStockPrice" %>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Cart</title>
+     <style>
+        .product-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .product-card {
+            width: 30%;
+            margin-bottom: 20px;
+        }
+        
+        #costdiv {
+            text-align: center;
+            margin-top: 40px;
+        }
+    </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).on('change', '.qtyinp', function() {
@@ -63,15 +80,12 @@
             <%-- Iterate over the products and render the HTML content --%>
             <%
             
-                List<Product> products = (List<Product>) request.getAttribute("products");
-           // ProdStockDAO ps = new ProdStockDAOImp();
-            double cartcost=0;
+                List<ProductStockPrice> products = (List<ProductStockPrice>) request.getAttribute("products");
+           double cartcost=0;
             int totalitems=0;
             int shipch=0;
-           /* cartcost = (double) request.getAttribute("cartt"); */
-                for (Product product : products) {totalitems++;
-                /* cartcost+=ps.getProdPriceById(product.getProd_id()); */
-            %>
+           for (ProductStockPrice product : products) {totalitems++;
+                %>
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100">
                     <img class="card-img-top" src="<%= product.getImage_url() %>" alt="<%= product.getProd_title() %>">
@@ -81,9 +95,8 @@
                     <label>Quantity<input type="number" align="center" name="Quantity" class="form-control qtyinp" style="width: 50px;" min="1" data-product-id="<%= product.getProd_id() %>" onchange="updateQuantity(this)" value="1"></label>
                     
                         <h5 class="card-title"><%= product.getProd_title() %></h5>
-                        <p class="card-text"><%= product.getProd_desc() %></p>
-                       <%--  <p class="card-text"><%= ps.getProdPriceById(product.getProd_id()) %></p>
-                          --%>
+                    <p class="card-text"><%= product.getProd_desc() %></p>
+                    <p class="card-text"><%= product.getPrice() %></p> 
                         <button class="btn btn-primary removeFromCart" data-product-id="<%= product.getProd_id() %>">Remove from Cart</button>
                         <button class="btn btn-secondary addToWishlistButton" data-product-id="<%= product.getProd_id() %>">Add to Wishlist</button>
                     </div>
@@ -92,13 +105,16 @@
             <%
                 }
             %>
-            <div>
-            <div>
+            
+        </div>
+    </div>
+    <div>
+            <div id="costdiv">
             <p>Total Items:<%=totalitems %></p>
             <p>ShipMent Charges:<%=shipch %></p>
             
-            </div>
-            <div id="costdiv">
+            
+            <div >
             <%
             if(products!=null)
             {
@@ -113,9 +129,7 @@
             		%><p>No CartProducts</p>
             		<%
             }
-            %></div>
+            %></div></div>
             </div>
-        </div>
-    </div>
 </body>
 </html>

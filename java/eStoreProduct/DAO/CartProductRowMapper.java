@@ -4,22 +4,27 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import eStoreProduct.model.Product;
+import eStoreProduct.utility.ProductStockPrice;
+@Component
+public class CartProductRowMapper implements RowMapper<ProductStockPrice> {
+	private ProdStockDAO prodStockDAO;
 
-public class CartProductRowMapper implements RowMapper<Product> {
+    public CartProductRowMapper(ProdStockDAO prodStockDAO) {
+        this.prodStockDAO = prodStockDAO;
+    }
 	@Override
-	public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Product product = new Product();
-		product.setProd_id(rs.getInt("Prod_id"));
-		product.setProd_title(rs.getString("prod_title"));
-		product.setProd_prct_id(rs.getInt("prod_prct_id"));
-		product.setProd_gstc_id(rs.getInt("prod_gstc_id"));
-		product.setProd_brand(rs.getString("prod_brand"));
-		product.setImage_url(rs.getString("image_url"));
-		product.setProd_desc(rs.getString("prod_desc"));
-		product.setReorderLevel(rs.getInt("reorderLevel"));
+	public ProductStockPrice mapRow(ResultSet rs, int rowNum) throws SQLException {
+		ProductStockPrice product = new ProductStockPrice(prodStockDAO);
+        product.setProd_id(rs.getInt("prod_id"));
+        product.setProd_title(rs.getString("prod_title"));
+        product.setProd_brand(rs.getString("prod_brand"));
+        product.setImage_url(rs.getString("image_url"));
+        product.setProd_desc(rs.getString("prod_desc"));
+        product.setPrice();
 
-		return product;
+        return product;
 	}
 }

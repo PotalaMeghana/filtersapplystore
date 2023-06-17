@@ -1,8 +1,6 @@
  <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ page import="java.util.*" %>
 <%@ page import="eStoreProduct.utility.ProductStockPrice" %>
-<%@ page import="eStoreProduct.DAO.ProdStockDAO" %>
-<%@ page import="eStoreProduct.DAO.ProdStockDAOImp" %>
 
 <!DOCTYPE html>
 <html>
@@ -34,7 +32,7 @@
                 <div class="card-body">
                     <h5 class="card-title"><%= product.getProd_title() %></h5>
                     <p class="card-text"><%= product.getProd_desc() %></p>
-                    <%-- <p class="card-text"><%= ps.getProdPriceById(product.getProd_id()) %></p> --%>
+                    <p class="card-text"><%= product.getPrice() %></p> 
                     <button class="btn btn-primary addToCartButton" data-product-id="<%= product.getProd_id() %>">Add To Cart</button>
                     <button class="btn btn-secondary addToWishlistButton" data-product-id="<%= product.getProd_id() %>">Add to Wishlist</button>
                 </div>

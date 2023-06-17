@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ page import="java.util.*" %>
-<%@ page import="eStoreProduct.model.Product" %>
-<%@ page import="eStoreProduct.DAO.ProdStockDAO" %>
-<%@ page import="eStoreProduct.DAO.ProdStockDAOImp" %>
+
+<%@ page import="eStoreProduct.utility.ProductStockPrice" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,7 +56,7 @@
 </head>
 
 <%
-    Product product = (Product)request.getAttribute("oneproduct");
+ProductStockPrice product = (ProductStockPrice)request.getAttribute("oneproduct");
 	//ProdStockDAO ps = new ProdStockDAOImp();
 %>
 
@@ -67,9 +66,9 @@
         <img src="<%= product.getImage_url()%>" alt="<%= product.getProd_title() %>">
     </div>
     <div class="product-details">
-        <h3 class="product-name"><%= product.getProd_title() %></h3>
-        <p class="product-description"><%= product.getProd_desc() %></p>
-       <%--  <p class="product-price"><%= ps.getProdPriceById(product.getProd_id()) %></p> --%>
+       <h5 class="card-title"><%= product.getProd_title() %></h5>
+                    <p class="card-text"><%= product.getProd_desc() %></p>
+                    <p class="card-text"><%= product.getPrice() %></p> 
     </div>
 </div>
 

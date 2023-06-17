@@ -23,7 +23,7 @@ public class ProductDAOImp implements ProductDAO {
     private final JdbcTemplate jdbcTemplate;
     private final String SQL_INSERT_PRODUCT = "insert into slam_products(prod_id, prod_title, prod_prct_id, prod_gstc_id, prod_brand, image_url, prod_desc, reorderlevel)  values(?, ?, ?, ?, ?, ?, ?, ?)";
     private final String SQL_GET_TOP_PRODID = "select prod_id from slam_products order by prod_id desc limit 1";
-    private String get_products_by_catg = "SELECT * FROM slam_Products WHERE prod_prct_id = ?";
+    private String get_products_by_catg = "select p.prod_id, p.prod_title, p.prod_brand, p.image_url, p.prod_desc, ps.prod_price FROM slam_Products p, slam_productstock ps where p.prod_id = ps.prod_id and p.prod_prct_id = ?";
     private String products_query = "SELECT p.prod_id, p.prod_title, p.prod_brand, p.image_url, p.prod_desc, ps.prod_price FROM slam_Products p, slam_productstock ps where p.prod_id = ps.prod_id";
     private String prdt_catg = "SELECT * FROM slam_ProductCategories";
     private String get_prd = "SELECT * FROM slam_Products WHERE prod_id = ?";
@@ -48,7 +48,14 @@ public class ProductDAOImp implements ProductDAO {
     }
 
     public List<ProductStockPrice> getProductsByCategory(Integer category_id) {
-        return jdbcTemplate.query(get_products_by_catg, new ProductRowMapper(prodStockDAO), category_id);
+    	
+    	System.out.println("in pdaoimp cid   "+category_id);
+    	List<ProductStockPrice> p=jdbcTemplate.query(get_products_by_catg, new ProductRowMapper(prodStockDAO), category_id);
+    	for(ProductStockPrice ps:p)
+    	{
+    		System.out.println("for loop      "+ps);
+    	}
+    	return p;
     }
 
     public List<ProductStockPrice> getAllProducts() {

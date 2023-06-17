@@ -46,13 +46,14 @@ public class ProductController {
 	@PostMapping("/categoryProducts")
 	public String showCategoryProducts(@RequestParam(value = "category_id", required = false) int categoryId,
 			Model model) {
+		//System.out.println("hiiiiiiiiiiiiiiiiiiiiiiiiiii");
 		//System.out.println("based on category method" + categoryId);
 
 		List<ProductStockPrice> products;
 		if (categoryId != 0) {
-			products = pdaoimp.getProductsByCategory(categoryId);
+			products = pdaoimp.getProductsByCategory(categoryId);System.out.println("hiiiiiiiiiii");
 		} else {
-			products = pdaoimp.getAllProducts();
+			products = pdaoimp.getAllProducts();System.out.println("hiiiiiiiiiiiiiiiiiii");
 		}
 		model.addAttribute("products", products);
 		return "productCatalog";

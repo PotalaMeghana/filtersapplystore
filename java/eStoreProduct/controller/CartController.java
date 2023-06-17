@@ -98,7 +98,7 @@ public class CartController {
         custCredModel cust1 = (custCredModel) session.getAttribute("customer");
 		if(cust1!=null)
 		{        
-			List<Product> products = cartimp.getCartProds(cust1.getCustId());
+			List<ProductStockPrice> products = cartimp.getCartProds(cust1.getCustId());
 			//cartt = obj.calcartp(products);
 			//System.out.println("cartt value "+cartt);
 		//	model.addAttribute("cartt", cartt);

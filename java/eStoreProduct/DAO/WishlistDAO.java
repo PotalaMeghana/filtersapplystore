@@ -3,6 +3,7 @@ package eStoreProduct.DAO;
 import java.util.List;
 
 import eStoreProduct.model.Product;
+import eStoreProduct.utility.ProductStockPrice;
 
 public interface WishlistDAO {
 
@@ -10,6 +11,6 @@ public interface WishlistDAO {
 
 	public int removeFromWishlist(int productId, int customerId);
 
-	public List<Product> getWishlistProds(int cust_id);
+	public List<ProductStockPrice> getWishlistProds(int cust_id);
 
 }

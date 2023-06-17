@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ page import="java.util.*" %>
-<%@ page import="eStoreProduct.model.Product" %>
-<%@ page import="eStoreProduct.DAO.ProdStockDAO" %>
-<%@ page import="eStoreProduct.DAO.ProdStockDAOImp" %>
+    <%@ page import="eStoreProduct.utility.ProductStockPrice" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,13 +14,13 @@
         <div class="row mt-4">
             <%-- Iterate over the products and render the HTML content --%>
             <%
-            List<Product> products = (List<Product>) request.getAttribute("products");
+            List<ProductStockPrice> products = (List<ProductStockPrice>) request.getAttribute("products");
             if(products==null)
             {
             	System.out.println("null in wishlist");
             }else{
             //ProdStockDAO ps = new ProdStockDAOImp();
-                for (Product product : products) {
+                for (ProductStockPrice product : products) {
                 	System.out.println(product);
             %>
             <div class="col-lg-4 col-md-6 mb-4">
@@ -33,10 +31,9 @@
                     <div class="card-body">
                     <label>Quantity<input type="number" align="center" name="Quantity" class="form-control qtyinp" style="width: 50px;" min="1" data-product-id="<%= product.getProd_id() %>" onchange="updateQuantity(this)" value="1"></label>
                     
-                        <h5 class="card-title"><%= product.getProd_title() %></h5>
-                        <p class="card-text"><%= product.getProd_desc() %></p>
-                        <%-- <p class="card-text"><%= ps.getProdPriceById(product.getProd_id()) %></p>
-                          --%>
+                       <h5 class="card-title"><%= product.getProd_title() %></h5>
+                    <p class="card-text"><%= product.getProd_desc() %></p>
+                    <p class="card-text"><%= product.getPrice() %></p> 
                         <button class="btn btn-primary removeFromWishlist" data-product-id="<%= product.getProd_id() %>">Remove from Wishlist</button>
                         <button class="btn btn-secondary addToCartButton" data-product-id="<%= product.getProd_id() %>">Add to cart</button>
                     </div>

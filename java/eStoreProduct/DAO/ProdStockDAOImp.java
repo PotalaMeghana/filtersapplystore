@@ -14,7 +14,7 @@ public class ProdStockDAOImp implements ProdStockDAO {
 	private static final String PD_STK_QUERY = "SELECT * FROM slam_productstock";
 	private static final String SELECT_PRD_STK_QUERY = "SELECT * FROM slam_productstock WHERE prod_id = ?";
 	private static final String PD_PRICE_QUERY = "SELECT prod_price FROM slam_productstock WHERE prod_id = ?";
-	private static final String PD_MRP_QUERY = "SELECT prod_mrp FROM slam_productstock WHERE prod_id = ?";
+	private static final String PD_MRP_QUERY = "SELECT prod_price FROM slam_productstock WHERE prod_id = ?";
 
 	private JdbcTemplate jdbcTemplate;
 

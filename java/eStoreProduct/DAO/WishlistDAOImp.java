@@ -6,94 +6,60 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import eStoreProduct.model.Product;
+import eStoreProduct.utility.ProductStockPrice;
 
 @Component
 public class WishlistDAOImp implements WishlistDAO {
 
-	private static final String JDBC_DRIVER = "org.postgresql.Driver";
-	private static final String DB_URL = "jdbc:postgresql://LocalHost:5432/postgres";
-	private static final String USERNAME = "postgres";
-	private static final String PASSWORD = "2468";
+	JdbcTemplate jdbcTemplate;
+	private ProdStockDAO prodStockDAO;
+	@Autowired
+	public WishlistDAOImp(DataSource dataSource, ProdStockDAO prodStockDAO) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		 this.prodStockDAO = prodStockDAO;
+	}
+	private String insert_slam_wishlist = "INSERT INTO slam_wishlist (c_id,p_id) VALUES (?, ?)";
+	private String delete_slam_wishlist = "DELETE FROM slam_wishlist WHERE c_id=? AND p_id=?";
+	private String select_slam_wishlist = "SELECT pd.* FROM slam_Products pd, slam_wishlist sc WHERE sc.c_id = ? AND sc.p_id = pd.prod_id";
 
 	public int addToWishlist(int productId, int customerId) {
-		try {
-			System.out.println("entered dao add to wishlist");
-			Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-			String query = "INSERT INTO slam_wishlist (c_id,p_id) VALUES (?, ?)";
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setInt(1, customerId);
-			statement.setInt(2, productId);
-			int r = statement.executeUpdate();
-			if (r > 0) {
-				System.out.println("inserted into wishlist");
-				return productId;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		int r = jdbcTemplate.update(insert_slam_wishlist, customerId, productId);
+		if (r > 0) {
+			System.out.println("inserted into cart");
+			return productId;
+
+		} else {
 			return -1;
 		}
-		return -1;
 	}
 
 	public int removeFromWishlist(int productId, int customerId) {
-		try {
-			Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-			String query = "DELETE FROM slam_wishlist WHERE c_id=? AND p_id=?";
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setInt(1, customerId);
-			statement.setInt(2, productId);
-			System.out.println("in wishlist remove method pid got  "+productId);
-			System.out.println("in wishlist remove method cid got  "+customerId);
-			int r = statement.executeUpdate();
-			if (r > 0) {
-				System.out.println("deleted from wishlist");
-				return productId;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		int r = jdbcTemplate.update(delete_slam_wishlist, customerId, productId);
+		if (r > 0) {
+			System.out.println("deleted from  cart");
+			return productId;
+		} else {
 			return -1;
 		}
-		return -1;
 	}
 
-	public List<Product> getWishlistProds(int cust_id) {
-		ArrayList<Product> products = new ArrayList<Product>();
-		System.out.println(cust_id + " from model");
+	public List<ProductStockPrice> getWishlistProds(int cust_id) {
 		try {
-			Class.forName(JDBC_DRIVER);
-			Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-			// System.out.println(cust_id + " from model");
-			String query = "select pd.* from slam_Products pd ,slam_wishlist sc where sc.c_id=? and sc.p_id=pd.prod_id";
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setInt(1, cust_id);
-			ResultSet resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				int prod_id = resultSet.getInt("Prod_id");
-				String prod_title = resultSet.getString("prod_title");
-				int prod_prct_id = resultSet.getInt("prod_prct_id");
-				int prod_gstc_id = resultSet.getInt("prod_gstc_id");
-				String prod_brand = resultSet.getString("prod_brand");
-				String image_url = resultSet.getString("image_url");
-				String prod_desc = resultSet.getString("prod_desc");
-				int reorderLevel = resultSet.getInt("reorderLevel");
-				Product product = new Product(prod_id, prod_title, prod_prct_id, prod_gstc_id, prod_brand, image_url,
-						prod_desc, reorderLevel);
-				products.add(product);
-			}
-			System.out.println(products.toString());
-			resultSet.close();
-			statement.close();
-			connection.close();
-		} catch (ClassNotFoundException | SQLException e) {
+			List<ProductStockPrice> cproducts = jdbcTemplate.query(select_slam_wishlist, new CartProductRowMapper(prodStockDAO), cust_id);
+			System.out.println(cproducts.toString());
+			return cproducts;
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-
-		return products;
-	}
+			return Collections.emptyList(); // or throw an exception if required
+		}}
 }

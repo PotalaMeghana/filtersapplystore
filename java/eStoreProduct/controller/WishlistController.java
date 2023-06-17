@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import eStoreProduct.model.Product;
 import eStoreProduct.model.custCredModel;
+import eStoreProduct.utility.ProductStockPrice;
 import eStoreProduct.DAO.WishlistDAO;
 import java.sql.SQLException;
 import java.util.List;
@@ -51,7 +52,7 @@ public class WishlistController {
 			throws NumberFormatException, SQLException {
 		System.out.println("wishlist called1");
 		 custCredModel cust1 = (custCredModel) session.getAttribute("customer");
-		 List<Product> products = wishlistdao.getWishlistProds(cust1.getCustId());
+		 List<ProductStockPrice> products = wishlistdao.getWishlistProds(cust1.getCustId());
 	        
 	        // Set the products attribute in the model
 	        model.addAttribute("products", products);

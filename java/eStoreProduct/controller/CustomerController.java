@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import eStoreProduct.model.Product;
 import eStoreProduct.model.custCredModel;
+import eStoreProduct.utility.ProductStockPrice;
 //import eStoreProduct.BLL.BLLClass;
 import eStoreProduct.DAO.ProductDAO;
 import eStoreProduct.DAO.cartDAO;
@@ -69,7 +70,7 @@ public class CustomerController {
 		//HashMap<Integer, Integer> hm = obj.getItemsqty();
 	//	HashMap<Integer, Integer> h = obj.gethmprice();
 	//	
-		List<Product> products = null;
+		List<ProductStockPrice> products = null;
 		custCredModel cust = (custCredModel) session.getAttribute("customer");
 		//System.out.println(cust.getCustId());
 		model.addAttribute("cust", cust);
