@@ -1,4 +1,4 @@
- package eStoreProduct.DAO;
+package eStoreProduct.DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,9 +16,9 @@ import eStoreProduct.model.Product;
 public class WishlistDAOImp implements WishlistDAO {
 
 	private static final String JDBC_DRIVER = "org.postgresql.Driver";
-	private static final String DB_URL = "jdbc:postgresql://192.168.110.48:5432/plf_training";
-	private static final String USERNAME = "plf_training_admin";
-	private static final String PASSWORD = "pff123";
+	private static final String DB_URL = "jdbc:postgresql://LocalHost:5432/postgres";
+	private static final String USERNAME = "postgres";
+	private static final String PASSWORD = "2468";
 
 	public int addToWishlist(int productId, int customerId) {
 		try {
@@ -47,6 +47,8 @@ public class WishlistDAOImp implements WishlistDAO {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, customerId);
 			statement.setInt(2, productId);
+			System.out.println("in wishlist remove method pid got  "+productId);
+			System.out.println("in wishlist remove method cid got  "+customerId);
 			int r = statement.executeUpdate();
 			if (r > 0) {
 				System.out.println("deleted from wishlist");

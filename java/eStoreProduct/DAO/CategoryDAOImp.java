@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CategoryDAOImp implements CategoryDAO{
 	private static final String JDBC_DRIVER = "org.postgresql.Driver";
-	private static final String DB_URL = "jdbc:postgresql://192.168.110.48:5432/plf_training";
-	private static final String USERNAME = "plf_training_admin";
-	private static final String PASSWORD = "pff123";
+	private static final String DB_URL = "jdbc:postgresql://LocalHost:5432/postgres";
+	private static final String USERNAME = "postgres";
+	private static final String PASSWORD = "2468";
 
 	public List<String> getAllCategories() {
 		List<String> categories = new ArrayList<>();

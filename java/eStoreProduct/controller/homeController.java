@@ -64,18 +64,48 @@ public class homeController {
 	}
 
 	
+	/*
+	 * @RequestMapping(value = "/signOk", method = RequestMethod.GET) public String
+	 * getHomeFinal(Model model,HttpSession session) {
+	 * 
+	 * //System.out.println("checking sign in"); //System.out.println(email + " " +
+	 * //psd); /// custCredModel cust = cdao.getCustomer(email, psd);
+	 * //System.out.println("object received when logged in " + cust); try {
+	 * cdao.updatelastlogin(cust.getCustId());
+	 * session.setAttribute("customer",cust); session.setAttribute("fl", true); }
+	 * catch (Exception e) { System.out.println(e); } //else {
+	 * session.setAttribute("fl", false); }
+	 * 
+	 * return "redirect:/"; // Redirect to the home page ("/") }
+	 */
+	
 	@RequestMapping(value = "/signOk", method = RequestMethod.GET)
-	public String getHomeFinal(Model model,HttpSession session) {
-		
-		  //System.out.println("checking sign in"); //System.out.println(email + " " +
-		  //psd); ///custCredModel cust = cdao.getCustomer(email, psd);
-		  //System.out.println("object received when logged in " + cust); try {
-		  //cdao.updatelastlogin(cust.getCustId()); session.setAttribute("customer",
-		  //cust); 
-		  session.setAttribute("fl", true); //} catch (Exception e) {
-		 // System.out.println(e); } } else { session.setAttribute("fl", false); }
-		 
-	    return "redirect:/"; // Redirect to the home page ("/")
+	public String getHomeFinal(@RequestParam("em") String email, @RequestParam("ps") String psd, Model model,
+			HttpSession session) {
+		System.out.println("checking sign in");
+		System.out.println(email + " " + psd);
+		custCredModel cust = cdao.getCustomer(email, psd);
+		System.out.println("object recieved when looged in " + cust);
+		// custCredModel b = cdao.checkCustomer(email, psd);
+		System.out.println("checking sign in 1");
+		try {
+			System.out.println(cust.getCustId());
+			cdao.updatelastlogin(cust.getCustId());
+			// model.addAttribute();
+			session.setAttribute("customer", cust);
+			// session.setAttribute("cid", );
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		System.out.println("checking sign in 2");
+		if (cust != null) {
+			session.setAttribute("customer", cust); // Store customer object in the session
+			flag = true;
+		}
+		custCredModel cust1 = (custCredModel) session.getAttribute("customer");
+		model.addAttribute("cust1", cust1);
+		model.addAttribute("fl", flag);
+		return "home";
 	}
 
 

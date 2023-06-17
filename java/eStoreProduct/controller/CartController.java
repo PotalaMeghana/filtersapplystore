@@ -12,19 +12,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import eStoreProduct.model.Product;
 import eStoreProduct.model.custCredModel;
+import eStoreProduct.utility.ProductStockPrice;
 import eStoreProduct.DAO.ProductDAO;
 import eStoreProduct.DAO.cartDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import eStoreProduct.BLL.BLLClass;
+//import eStoreProduct.BLL.BLLClass;
 import javax.servlet.http.HttpSession;
 
 @Controller
 public class CartController {
 	cartDAO cartimp;
 	private final ProductDAO pdaoimp;
-	List<Product> alist=new ArrayList<>();
+	List<ProductStockPrice> alist=new ArrayList<>();
 	//BLLClass obj = new BLLClass();
 	@Autowired
 	public CartController(cartDAO cartdao,ProductDAO productdao)
@@ -46,7 +47,7 @@ public class CartController {
 		//System.out.println("add to cart called2");
 		return cartimp.addToCart(productId, cust1.getCustId()) + " Added to cart";}
 		else {
-			Product product=pdaoimp.getProductById(productId);
+			ProductStockPrice product=pdaoimp.getProductById(productId);
 		//System.out.println("added to cart "+product.getProd_id());
 		//System.out.println(product);
 			alist.add(product);
@@ -75,7 +76,7 @@ public class CartController {
 		else {
 			//Product product=pdaoimp.getProductById(productId);
 			//System.out.println("remove from cart nonlogin");
-			for(Product p:alist)
+			for(ProductStockPrice p:alist)
 			{
 			if(p.getProd_id()==productId)
 			
@@ -111,7 +112,7 @@ public class CartController {
 		{
 			 // Set the products attribute in the model
 	        model.addAttribute("products", alist);
-	        for(Product p:alist)
+	        for(ProductStockPrice p:alist)
 			{
 				//System.out.println(p);
 			}

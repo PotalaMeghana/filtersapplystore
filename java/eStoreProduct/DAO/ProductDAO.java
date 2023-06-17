@@ -4,17 +4,20 @@ import java.util.List;
 
 import eStoreProduct.model.Category;
 import eStoreProduct.model.Product;
+import eStoreProduct.utility.ProductStockPrice;
 
 public interface ProductDAO {
 
+	public boolean createProduct(Product p);
+
 	public List<String> getAllProductCategories();
 
-	public List<Product> getProductsByCategory(Integer category);
+	public List<ProductStockPrice> getProductsByCategory(Integer category);
 
-	public List<Product> getAllProducts();
+	public List<ProductStockPrice> getAllProducts();
 
 	public List<Category> getAllCategories();
 
-	public Product getProductById(Integer productId);
+	public ProductStockPrice getProductById(Integer productId);
 
 }

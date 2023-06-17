@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import eStoreProduct.model.Product;
-
+import eStoreProduct.model.custCredModel;
 import eStoreProduct.DAO.WishlistDAO;
 import java.sql.SQLException;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class WishlistController {
@@ -23,30 +25,33 @@ public class WishlistController {
 	}
 	@GetMapping("/addToWishlist")
 	@ResponseBody
-	public String addToWishlist(@RequestParam(value = "productId", required = true) int productId, Model model)
+	public String addToWishlist(@RequestParam(value = "productId", required = true) int productId, Model model, HttpSession session)
 			throws NumberFormatException, SQLException {
 		System.out.println("add to wishlist called1");
 		//ProductDAO pdao = new ProductDAO();
 		//System.out.println("add to wishlist called2");
-		return wishlistdao.addToWishlist(productId, 1) + " Added to wishlist";
+		custCredModel cust = (custCredModel) session.getAttribute("customer");
+		return wishlistdao.addToWishlist(productId, cust.getCustId()) + " Added to wishlist";
 
 	}
 	@GetMapping("/removeFromWishlist")
 	@ResponseBody
-	public String removeFromWishlist(@RequestParam(value = "productId", required = true) int productId, Model model)
+	public String removeFromWishlist(@RequestParam(value = "productId", required = true) int productId, Model model, HttpSession session)
 			throws NumberFormatException, SQLException {
 		System.out.println("remove from wishlist called1");
 		//ProductDAO pdao = new ProductDAO();
 		System.out.println("remove from wishlist called2");
-		return wishlistdao.removeFromWishlist(productId, 1) + " remove from wishlist";
+		custCredModel cust = (custCredModel) session.getAttribute("customer");
+		return wishlistdao.removeFromWishlist(productId, cust.getCustId()) + " remove from wishlist";
 
 	}
 	@GetMapping("/wishlistItems")
 	//@ResponseBody
-	public String userWishlistItems(@RequestParam(value = "userId", required = true) int cust_id, Model model)
+	public String userWishlistItems(Model model,HttpSession session)
 			throws NumberFormatException, SQLException {
 		System.out.println("wishlist called1");
-		 List<Product> products = wishlistdao.getWishlistProds(cust_id);
+		 custCredModel cust1 = (custCredModel) session.getAttribute("customer");
+		 List<Product> products = wishlistdao.getWishlistProds(cust1.getCustId());
 	        
 	        // Set the products attribute in the model
 	        model.addAttribute("products", products);

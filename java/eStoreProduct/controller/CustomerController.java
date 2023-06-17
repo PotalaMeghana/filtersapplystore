@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import eStoreProduct.model.Product;
 import eStoreProduct.model.custCredModel;
-import eStoreProduct.BLL.BLLClass;
+//import eStoreProduct.BLL.BLLClass;
 import eStoreProduct.DAO.ProductDAO;
 import eStoreProduct.DAO.cartDAO;
 import eStoreProduct.DAO.customerDAO;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class CustomerController {
 	customerDAO cdao;
-	BLLClass obj;
+	//BLLClass obj;
 	cartDAO cartimp;
 	@Autowired
 	public CustomerController(cartDAO cartdao,customerDAO customerdao ) {
